@@ -1,0 +1,44 @@
+# COG-Multimodal Intent Recognition
+
+## 1. Introduction
+
+多模态意图识别旨在从文本、音频和视频等多个维度综合分析用户的意图，是人机交互系统中的关键任务。然而，现有方法大多停留在特征层面的融合，未能充分利用音视频模态中的**高层次语义信息**，导致识别性能受限。由此，本文提出一种**概念引导的多模态意图识别增强框架（CoG）**，旨在通过引入大模型生成的语义概念与推理线索，提升现有多模态融合方法的性能。
+
+## 2. Method
+
+该框架首先通过预训练模型分别提取文本、视频和音频的底层特征，并利用现有的多模态融合方法（如MAG-BERT、MISA等）获得基础的多模态融合表示。随后，借助多模态大模型Qwen2.5-VL-7B-Instruct与Qwen2-Audio，从视频和音频中显式提取高层次语义概念，如面部表情、手势、语速、语气，再结合原始文本，利用大语言模型Qwen3-8B生成结构化的意图推理线索。
+
+![image-20251027195237736](C:\Users\lenovo\Desktop\fig\Method.png)
+
+为了将这些线索知识有效注入基础表示，本文设计了一种渐进式知识引导融合机制：通过一个多层注意力网络从推理线索中提炼出不同层次的语义信息，并经由一个由N个模块构成的级联网络，将这些层次化知识逐步融合到基础多模态特征中，实现深度语义增强。最后，在决策阶段引入协同决策机制，将增强后的多模态预测与基于推理线索的预测进行自适应加权融合，并通过交叉熵损失进行优化，从而得出最终的意图分类结果，显著提升了现有融合方法的性能与鲁棒性。
+
+## 3. Experiments
+
+在两个公开数据集上验证 CoG 框架的有效性：
+
+**MIntRec**：在六种基线方法上，ACC 提升 1%~3%，最高达 **75.73%**。
+
+<img src="C:\Users\lenovo\Desktop\fig\result_MIntRec.png" alt="image-20251027195534665" style="zoom:43%;" />
+
+针对MIntRec所做的消融实验结果如下：
+
+<img src="C:\Users\lenovo\Desktop\fig\ablation_k_top_MIntRec.png" alt="image-20251027195534665" style="zoom:25%;" />
+
+<img src="C:\Users\lenovo\Desktop\fig\ablation_k_end_MIntRec.png" alt="image-20251027195534665" style="zoom:25%;" />
+
+- **MIntRec2.0**：在更复杂的多模态意图识别任务中，ACC 提升 0%~1%，最高达 **60.91%**。
+
+<img src="C:\Users\lenovo\Desktop\fig\result_MIntRec2.0.png" alt="image-20251027195749310" style="zoom:50%;" />
+
+针对MIntRec2.0所做的消融实验结果如下：
+
+<img src="C:\Users\lenovo\Desktop\fig\MIntRec2_end_radar.png" alt="image-20251027195534665" style="zoom:25%;" />
+
+<img src="C:\Users\lenovo\Desktop\fig\MIntRec2_top_radar.png" alt="image-20251027195534665" style="zoom:25%;" />
+
+## 4. Contributions✨
+
+1. 提出一种**概念引导的增强范式**，显式引入音视频高级语义信息。
+2. 设计**渐进式知识注入网络**，实现多层次语义信息的精细化融合。
+3. 在多个基准数据集上验证了方法的**有效性与泛化能力**。
+
