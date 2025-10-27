@@ -1,0 +1,83 @@
+import torch
+import logging
+from torch import nn
+from .__init__ import methods_map
+
+__all__ = ['ModelManager']
+
+class MIA(nn.Module):
+
+    def __init__(self, args):
+
+        super(MIA, self).__init__()
+
+        fusion_method = methods_map[args.method]
+        self.model = fusion_method(args)
+
+    def forward(self, text_feats, video_feats, audio_feats, *args, **kwargs):
+
+        # video_feats, audio_feats = video_feats.float(), audio_feats.float()
+        mm_model = self.model(text_feats, video_feats, audio_feats, *args, **kwargs)
+
+        return mm_model
+    
+    # sdif
+    def pre_train(self, text_feats):
+        mm_model = self.model.pre_train(text_feats)
+        return mm_model
+
+
+
+# class MIA_WUMO(nn.Module):
+
+#     def __init__(self, args):
+
+#         super(MIA_WUMO, self).__init__()
+
+#         fusion_method = methods_map[args.method]
+#         self.model = fusion_method(args)
+
+#     def forward(self, text_speaker_feats, video_text_feats, audio_text_feats, text_video_feats, text_audio_feats, video_feats, audio_feats, *args, **kwargs):
+
+#         video_feats, audio_feats = video_feats.float(), audio_feats.float()
+#         mm_model = self.model(text_speaker_feats, video_text_feats, audio_text_feats, text_video_feats, text_audio_feats, video_feats, audio_feats, *args, **kwargs)
+
+#         return mm_model
+
+
+
+class MIA_GOBI(nn.Module):
+
+    def __init__(self, args):
+
+        super(MIA_GOBI, self).__init__()
+
+        fusion_method = methods_map[args.method]
+        self.model = fusion_method(args)
+
+    def forward(self, text_speaker_feats, video_text_feats, audio_text_feats, video_feats, audio_feats, *args, **kwargs):
+
+        video_feats, audio_feats = video_feats.float(), audio_feats.float()
+        mm_model = self.model(text_speaker_feats, video_text_feats, audio_text_feats, video_feats, audio_feats, *args, **kwargs)
+
+        return mm_model
+
+
+
+
+    
+class ModelManager:
+
+    def __init__(self, args):
+        
+        self.logger = logging.getLogger(args.logger_name)
+        self.device = args.device = torch.device('cuda:%d' % int(args.gpu_id) if torch.cuda.is_available() else 'cpu')
+        self.model = self._set_model(args)
+
+    def _set_model(self, args):
+        if args.method == 'gobi':
+            model=MIA_GOBI(args)
+        else:    
+            model = MIA(args) 
+        model.to(self.device)
+        return model
