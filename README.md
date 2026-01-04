@@ -16,31 +16,32 @@
 
 在两个公开数据集上验证 CoG 框架的有效性：
 
-**MIntRec**：在六种基线方法上，ACC 提升 1%~3%，最高达 **75.73%**。
+**MIntRec**：在七种基线方法上，ACC 提升 1%~3%，最高达 **75.73%**。
 
-<img src=".\fig\result_MIntRec.png" alt="image-20251027195534665" style="zoom:43%;" />
+<img src=".\fig\MIntRec_Result.png" alt="image-20251027195534665" style="zoom:43%;" />
 
 针对MIntRec所做的消融实验结果如下：
 
-<img src=".\fig\ablation_k_top_MIntRec.png" alt="image-20251027195534665" style="zoom:25%;" />
+<img src=".\fig\MIntRec_ablation_k_top.png" alt="image-20251027195534665" style="zoom:25%;" />
 
-<img src=".\fig\ablation_k_end_MIntRec.png" alt="image-20251027195534665" style="zoom:25%;" />
+<img src=".\fig\MIntRec_ablation_k_end.png" alt="image-20251027195534665" style="zoom:25%;" />
 
 - **MIntRec2.0**：在更复杂的多模态意图识别任务中，ACC 提升 1%~2%，最高达 **60.91%**。
 
-<img src=".\fig\result_MIntRec2.0.png" alt="image-20251027195749310" style="zoom:50%;" />
+<img src=".\fig\MIntRec2.0_Result.png" alt="image-20251027195749310" style="zoom:50%;" />
 
 针对MIntRec2.0所做的消融实验结果如下：
 
-<img src=".\fig\MIntRec2_end_radar.png" alt="image-20251027195534665" style="zoom:25%;" />
+<img src=".\fig\MIntRec2.0_ablation_k_top.png" alt="image-20251027195534665" style="zoom:25%;" />
 
-<img src=".\fig\MIntRec2_top_radar.png" alt="image-20251027195534665" style="zoom:25%;" />
+<img src=".\fig\MIntRec2.0_ablation_k_top.png" alt="image-20251027195534665" style="zoom:25%;" />
 
 ## 4. Contributions✨
 
 1. 提出一种**概念引导的增强范式**，显式引入音视频高级语义信息。
 2. 设计**渐进式知识注入网络**，实现多层次语义信息的精细化融合。
 3. 在多个基准数据集上验证了方法的**有效性与泛化能力**。
+
 
 
 
